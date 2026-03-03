@@ -1,7 +1,7 @@
 import pool from "../config/db.js"
 
 const produtoModel = {
-    // CREATE - Inserir novo produto
+    // Criar - Inserir novo produto
     inserirProduto: async (idCategoria, nomeProduto, valorProduto, vinculoImagem) => {
         const sql = "INSERT INTO produtos (idCategoria, nomeProduto, valorProduto, vinculoImagem, dataCad) VALUES (?, ?, ?, ?, NOW())";
         const values = [idCategoria, nomeProduto, valorProduto, vinculoImagem];
@@ -9,21 +9,21 @@ const produtoModel = {
         return rows;
     },
 
-    // READ - Buscar todos os produtos
+    // buscarTodos - Buscar todos os produtos
     buscarTodos: async () => {
-        const sql = "SELECT * FROM Produtos";
+        const sql = "SELECT * FROM produtos";
         const [rows] = await pool.execute(sql);
         return rows;
     },
 
-    // READ - Buscar um produto pelo ID
+    // buscarUM - Buscar um produto pelo ID
     buscarUm: async (idProduto) => {
-        const sql = "SELECT * FROM Produtos WHERE idProduto = ?";
+        const sql = "SELECT * FROM produtos WHERE idProduto = ?";
         const [rows] = await pool.execute(sql, [idProduto]);
         return rows;
     },
 
-    // UPDATE - Atualizar algum produto ja existente
+    // PUT - Atualizar algum produto ja existente
     atualizarProduto: async (idProduto, nomeProduto, valorProduto, vinculoImagem) => {
         const sql = "UPDATE produtos SET nomeProduto = ?, valorProduto = ?, vinculoImagem = ?, dataCad = NOW() WHERE idProduto = ?";
         const values = [nomeProduto, valorProduto, vinculoImagem, idProduto];

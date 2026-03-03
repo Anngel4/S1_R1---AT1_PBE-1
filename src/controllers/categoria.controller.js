@@ -10,13 +10,10 @@ const categoriaController = {
                 return res.status(400).json({ message: 'Descrição da categoria é obrigatória' });
             }
 
-            const result = await categoriaModel.insert({ descricaoCategoria });
+            const result = await categoriaModel.inserir({ descricaoCategoria });
 
             if (result.insertId > 0) {
-                return res.status(201).json({ 
-                    message: 'Categoria cadastrada com sucesso',
-                    idCategoria: result.insertId
-                });
+                return res.status(201).json({ message: 'Categoria cadastrada com sucesso'});
             }
             return res.status(400).json({ message: 'Erro ao cadastrar categoria' });
         } catch (error) {
@@ -28,7 +25,7 @@ const categoriaController = {
     // Selecionar todas as categorias
     listarCategorias: async (req, res) => {
         try {
-            const categorias = await categoriaModel.selectAll();
+            const categorias = await categoriaModel.buscarTodas();
             return res.status(200).json(categorias);
         } catch (error) {
             console.error(error);
@@ -40,7 +37,7 @@ const categoriaController = {
     buscarCategoria: async (req, res) => {
         try {
             const { id } = req.params;
-            const categoria = await categoriaModel.selectById(id);
+            const categoria = await categoriaModel.buscarUm(id);
 
             if (!categoria) {
                 return res.status(404).json({ message: 'Categoria não encontrada' });
@@ -63,12 +60,12 @@ const categoriaController = {
                 return res.status(400).json({ message: 'Descrição da categoria é obrigatória' });
             }
 
-            const categoriaExistente = await categoriaModel.selectById(id);
+            const categoriaExistente = await categoriaModel.buscarUm(id);
             if (!categoriaExistente) {
                 return res.status(404).json({ message: 'Categoria não encontrada' });
             }
 
-            await categoriaModel.update({ idCategoria: id, descricaoCategoria });
+            await categoriaModel.atualizar({ idCategoria: id, descricaoCategoria });
 
             return res.status(200).json({ message: 'Categoria atualizada com sucesso' });
         } catch (error) {
@@ -82,12 +79,12 @@ const categoriaController = {
         try {
             const { id } = req.params;
 
-            const categoriaExistente = await categoriaModel.selectById(id);
+            const categoriaExistente = await categoriaModel.buscarUm(id);
             if (!categoriaExistente) {
                 return res.status(404).json({ message: 'Categoria não encontrada' });
             }
 
-            await categoriaModel.delete(id);
+            await categoriaModel.deletar(id);
 
             return res.status(200).json({ message: 'Categoria excluída com sucesso' });
         } catch (error) {

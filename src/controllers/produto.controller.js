@@ -1,13 +1,13 @@
 import produtoModel from "../models/produto.models.js";
 
 const produtoController = {
-    // READ - Listar todos ou buscar um por ID
+    // GET - Listar todos ou buscar um por ID
     listarProdutos: async (req, res) => {
         try {
             const { idProduto } = req.query;
 
             if (idProduto) {
-                // Valida se é um número válido (ID é INT, não UUID)
+                // Valida se é um número válido
                 const idNum = parseInt(idProduto);
                 if (isNaN(idNum) || idNum <= 0) {
                     return res.status(400).json({ erro: 'ID do produto inválido' })
@@ -25,13 +25,13 @@ const produtoController = {
             const produtos = await produtoModel.buscarTodos();
             res.status(200).json(produtos);
         } catch (error) {
-            console.error("Erro ao listar produto", error);
+            console.error("Erro ao listar produtos", error);
             res.status(500).json({ message: 'Erro ao buscar produtos' });
         }
     },
 
-    // CREATE - Criar novo produto
-    criarProduto: async (req, res) => {
+    // POST - Criar novo produto
+    cadastrarProduto: async (req, res) => {
         try {
             const { idCategoria, nomeProduto, valorProduto, vinculoImagem } = req.body;
 
@@ -53,13 +53,13 @@ const produtoController = {
         }
     },
 
-    // UPDATE - Atualizar produto
+    // PUT - Atualizar produto
     atualizarProduto: async (req, res) => {
         try {
             const { idProduto } = req.params;
             const { nomeProduto, valorProduto, vinculoImagem } = req.body;
 
-            // Valida se é um número válido (ID é INT, não UUID)
+            // Valida se é um número válido
             const idNum = parseInt(idProduto);
             if (isNaN(idNum) || idNum <= 0) {
                 return res.status(400).json({ erro: 'ID do produto inválido!' })
@@ -92,7 +92,7 @@ const produtoController = {
         try {
             const { idProduto } = req.params;
 
-            // Valida se é um número válido (ID é INT, não UUID)
+            // Validar se é um número válido ou não
             const idNum = parseInt(idProduto);
             if (isNaN(idNum) || idNum <= 0) {
                 return res.status(400).json({ erro: 'ID do produto inválido!' })
